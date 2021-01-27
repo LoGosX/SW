@@ -95,6 +95,7 @@ class MainWindow(QMainWindow):
 
         self.Form = QWidget()
         self.ui = UserWindow()
+        self.ui.prepareData(self.currentUser)
         self.ui.close.connect(self.UserWindowClose)
         self.ui.setupUi(self.Form)
         self.Form.show()
