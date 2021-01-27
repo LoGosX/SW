@@ -1,13 +1,10 @@
-import string
-
 import cv2
-import sys
-from PyQt5.QtWidgets import QMainWindow, QLabel, QWidget, QDialog, QMessageBox, QPushButton
 from PyQt5.QtCore import QThread, Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtWidgets import QMainWindow, QLabel, QDialog, QMessageBox, QPushButton
 
+from GUI.UserWindow import UserWindow
 from facerecognition.facerecognizer import FaceRecognizer
-
 
 
 class VideoThread(QThread):
@@ -43,8 +40,11 @@ class MainWindow(QMainWindow):
         self.resize(self.disply_width,self.display_height)
 
         self.Loginmsg = QMessageBox()
+        self.Loginmsg.setWindowFlag(Qt.FramelessWindowHint)
         self.Loginmsg.setStandardButtons(QMessageBox.Ok | QMessageBox.No)
         self.Loginmsg.buttonClicked.connect(self.loginButton_clicked)
+        self.Loginmsg.setEscapeButton(QMessageBox.No)
+
 
         self.label = QLabel(self)
         self.label.resize( self.disply_width, self.display_height)
@@ -53,12 +53,7 @@ class MainWindow(QMainWindow):
         self.video.login.connect(self.loginUser)
         self.video.start()
 
-
         self.show()
-
-    def openSecond(self):
-        myDialof = QDialog(self)
-        myDialof.show()
 
     @pyqtSlot(QImage)
     def setImage(self, image):
@@ -69,11 +64,25 @@ class MainWindow(QMainWindow):
         self.Loginmsg.setText("Hi {}!\n Would you like to log in? ".format(user))
         self.Loginmsg.show()
 
+    @pyqtSlot()
+    def UserWindow(self):
+        self.video.isFree = True
+
+
     def loginButton_clicked(self, i):
         if i.text() == "OK":
-            print(i.text())
+            self.Loginmsg.close()
+            self.OpenUserWindow()
         else:
             self.video.isFree = True
+
+    def OpenUserWindow(self):
+        self.User = UserWindow()
+        self.User.closeInfo.connect(self.UserWindow)
+        self.User.show()
+
+
+
 
 def keyPressEvent(self, e):
         if e.key() == Qt.Key_F9:
