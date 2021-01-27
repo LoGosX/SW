@@ -1,28 +1,43 @@
-import cv2
-import sys
-from PyQt5.QtWidgets import QMainWindow, QLabel, QWidget, QDialog, QMessageBox, QPushButton, QGridLayout
-from PyQt5.QtCore import QThread, Qt, pyqtSignal, pyqtSlot
-from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtWidgets import QLabel, QWidget, QPushButton, QTextBrowser
+from PyQt5.QtCore import pyqtSignal, QRect, QMetaObject, QCoreApplication
 
 
 class UserWindow(QWidget):
-    closeInfo = pyqtSignal()
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle('Login')
-        self.resize(620, 620)
-        layout = QGridLayout()
+    close = pyqtSignal()
 
-        self.label = QLabel("xd")
-        layout.addWidget(self.label)
+    def setupUi(self, Form):
+        self.Form = Form
+        Form.setObjectName("Form")
+        Form.resize(400, 300)
+        self.pushButton = QPushButton(Form)
+        self.pushButton.setGeometry(QRect(250, 30, 121, 61))
+        self.pushButton.setObjectName("pushButton")
+        self.pushButton_2 = QPushButton(Form)
+        self.pushButton_2.setGeometry(QRect(250, 110, 121, 61))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_3 = QPushButton(Form)
+        self.pushButton_3.clicked.connect(self.DzialajPls)
+        self.pushButton_3.setGeometry(QRect(250, 200, 121, 61))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.label = QLabel(Form)
+        self.label.setGeometry(QRect(20, 10, 200, 31))
+        self.label.setObjectName("label")
+        self.textBrowser = QTextBrowser(Form)
+        self.textBrowser.setGeometry(QRect(10, 60, 181, 192))
+        self.textBrowser.setObjectName("textBrowser")
 
-        self.button = QPushButton('Close')
-        self.button.clicked.connect(self.closeUserWindow)
+        self.retranslateUi(Form)
+        QMetaObject.connectSlotsByName(Form)
 
-        layout.addWidget(self.button)
+    def retranslateUi(self, Form):
+        _translate = QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.pushButton.setText(_translate("Form", "NEXT"))
+        self.pushButton_2.setText(_translate("Form", "WRITE"))
+        self.pushButton_3.setText(_translate("Form", "LOG OUT"))
+        self.label.setText(_translate("Form", "Masz {} nowych wiadomosci".format(0)))
 
-        self.setLayout(layout)
-
-    def closeUserWindow(self ) :
+    def DzialajPls(self):
         self.close.emit()
-        self.close()
+        self.Form.close()
+

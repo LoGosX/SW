@@ -1,10 +1,11 @@
 import cv2
 from PyQt5.QtCore import QThread, Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QLabel, QDialog, QMessageBox, QPushButton
+from PyQt5.QtWidgets import QMainWindow, QLabel, QDialog, QMessageBox, QWidget
 
 from GUI.UserWindow import UserWindow
 from facerecognition.facerecognizer import FaceRecognizer
+import random
 
 
 class VideoThread(QThread):
@@ -25,6 +26,8 @@ class VideoThread(QThread):
             if(self.isFree):
                 self.login.emit("xd")
                 self.isFree = False
+
+
 
 
 class MainWindow(QMainWindow):
@@ -55,6 +58,10 @@ class MainWindow(QMainWindow):
 
         self.show()
 
+    def openSecond(self):
+        myDialof = QDialog(self)
+        myDialof.show()
+
     @pyqtSlot(QImage)
     def setImage(self, image):
         self.label.setPixmap(QPixmap.fromImage(image))
@@ -65,7 +72,7 @@ class MainWindow(QMainWindow):
         self.Loginmsg.show()
 
     @pyqtSlot()
-    def UserWindow(self):
+    def UserWindowClose(self):
         self.video.isFree = True
 
 
@@ -76,11 +83,18 @@ class MainWindow(QMainWindow):
         else:
             self.video.isFree = True
 
-    def OpenUserWindow(self):
-        self.User = UserWindow()
-        self.User.closeInfo.connect(self.UserWindow)
-        self.User.show()
+    def LoginClose(self):
+        self.video.isFree = True
+        self.close()
 
+
+    def OpenUserWindow(self):
+
+        self.Form = QWidget()
+        self.ui = UserWindow()
+        self.ui.close.connect(self.UserWindowClose)
+        self.ui.setupUi(self.Form)
+        self.Form.show()
 
 
 
