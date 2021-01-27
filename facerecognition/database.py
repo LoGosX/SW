@@ -108,7 +108,7 @@ class Database:
 
     def get_match(self, face_encoding, tolerance=0.6):
         """
-        Zwraca listę instancji DatabasePerson pasujących do face_encoding
+        Zwraca instancje DatabasePerson pasujących do face_encoding
         :param face_encoding: enkodowana twarz
         :return: lista DatabasePerson
         """
