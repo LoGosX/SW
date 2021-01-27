@@ -62,9 +62,8 @@ class FaceRecognizer:
             matches.append(match)
         return matches
 
-    def get_recognized_faces(self):
-        """
-        Zwraca listę ostatnio wykrytych osób (może być ich wiele w jednej klatce)
-        :return: liste krotek (imie, twarz odczytaną z bazy danych) dla wykrytych osób. ("Nieznana twarz", None) dla nierozpoznanych
-        """
-        pass
+    def get_recognized_face(self):
+        if not self._matches or len(self._matches) > 1:
+            return None
+        else:
+            return self._matches[0].identity
