@@ -23,8 +23,9 @@ class VideoThread(QThread):
             convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
             p = convertToQtFormat.scaled(1600, 1200, Qt.KeepAspectRatio)
             self.changePixmap.emit(p)
-            if(self.isFree):
-                self.login.emit("xd")
+            person = fr.get_recognized_face()
+            if(self.isFree and  person != None):
+                self.login.emit(person)
                 self.isFree = False
 
 
@@ -34,6 +35,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self,parent = None):
         super().__init__()
+        self.currentUser = ""
         self.initUI()
 
     def initUI(self):
@@ -68,7 +70,8 @@ class MainWindow(QMainWindow):
 
     @pyqtSlot(str)
     def loginUser(self, user):
-        self.Loginmsg.setText("Hi {}!\n Would you like to log in? ".format(user))
+        self.currentUser = user
+        self.Loginmsg.setText("Hi {}!\n Would you like to log in? ".format(self.currentUser))
         self.Loginmsg.show()
 
     @pyqtSlot()
@@ -98,6 +101,6 @@ class MainWindow(QMainWindow):
 
 
 
-def keyPressEvent(self, e):
-        if e.key() == Qt.Key_F9:
-            self.close()
+    def keyPressEvent(self, e):
+            if e.key() == Qt.Key_F9:
+                self.close()
