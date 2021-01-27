@@ -59,12 +59,12 @@ class FaceRecognizer:
         matches = []
         for encoding in encodings:
             match = self._db.get_match(encoding)
-            if match is not None:
-                matches.append(match)
+            matches.append(match)
         return matches
 
     def get_recognized_face(self):
-        if not self._matches or len(self._matches) > 1:
+        matches = [match for match in self._matches if match is not None]
+        if len(matches) != 1:
             return None
         else:
-            return self._matches[0].identity
+            return matches[0].identity
