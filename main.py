@@ -1,21 +1,16 @@
-from facerecognition.facerecognizer import FaceRecognizer
-import cv2
-import numpy as np
-import os
+from PyQt5.QtWidgets import QApplication
+from GUI.MainWindow import MainWindow
+import sys
+
+
 
 def main():
-    fr = FaceRecognizer()
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    #window.showFullScreen()
+    window.show()
+    app.exec_()
 
-    while True:
-        fr._update()
-        frame = fr.get_frame(mark_faces=True)
-
-        cv2.imshow('Video', frame)
-        cv2.imwrite(os.path.join(os.path.curdir, "frame.jpg"), frame)
-
-        # Hit 'q' on the keyboard to quit!
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
 
 if __name__ == '__main__':
     main()
