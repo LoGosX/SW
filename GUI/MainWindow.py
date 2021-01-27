@@ -48,10 +48,10 @@ class MainWindow(QMainWindow):
 
         self.label = QLabel(self)
         self.label.resize( self.disply_width, self.display_height)
-        video = VideoThread(self)
-        video.changePixmap.connect(self.setImage)
-        video.login.connect(self.loginUser)
-        video.start()
+        self.video = VideoThread(self)
+        self.video.changePixmap.connect(self.setImage)
+        self.video.login.connect(self.loginUser)
+        self.video.start()
 
 
         self.show()
@@ -72,7 +72,8 @@ class MainWindow(QMainWindow):
     def loginButton_clicked(self, i):
         if i.text() == "OK":
             print(i.text())
-        print(i.text())
+        else:
+            self.video.isFree = True
 
 def keyPressEvent(self, e):
         if e.key() == Qt.Key_F9:
