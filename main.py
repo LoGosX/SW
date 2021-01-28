@@ -7,8 +7,8 @@ import sys
 def main():
     app = QApplication(sys.argv)
     window = MainWindow()
-    #window.showFullScreen()
-    window.show()
+    window.showFullScreen()
+    #window.show()
     app.exec_()
 
 

@@ -7,8 +7,11 @@ from GUI.UserWindow import UserWindow
 from facerecognition.facerecognizer import FaceRecognizer
 import random
 
+WIDTH = 1300
+HEIGHT = 800
 
 class VideoThread(QThread):
+
     changePixmap = pyqtSignal(QImage)
     login = pyqtSignal(str)
     def run(self):
@@ -21,10 +24,10 @@ class VideoThread(QThread):
             h, w, ch = rgbImage.shape
             bytesPerLine = ch * w
             convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-            p = convertToQtFormat.scaled(1600, 1200, Qt.KeepAspectRatio)
+            p = convertToQtFormat.scaled(WIDTH, HEIGHT, Qt.KeepAspectRatio)
             self.changePixmap.emit(p)
             person = fr.get_recognized_face()
-            if(self.isFree and  person != None):
+            if(self.isFree and person != None):
                 self.login.emit(person)
                 self.isFree = False
 
@@ -38,11 +41,12 @@ class MainWindow(QMainWindow):
         self.currentUser = ""
         self.initUI()
 
+
     def initUI(self):
         self.setWindowTitle("SW")
-        self.disply_width = 1600
-        self.display_height = 1200
-        self.resize(self.disply_width,self.display_height)
+        self.disply_width = WIDTH
+        self.display_height = HEIGHT
+        #self.resize(self.disply_width, self.display_height)
 
         self.Loginmsg = QMessageBox()
         self.Loginmsg.setWindowFlag(Qt.FramelessWindowHint)

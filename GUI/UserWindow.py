@@ -4,11 +4,10 @@ from PyQt5.QtCore import pyqtSignal, QRect, QMetaObject, QCoreApplication
 
 class UserWindow(QWidget):
     close = pyqtSignal()
-    user = ""
-    messages = []
 
     def prepareData(self, name):
         self.user = name
+        self.messages = []
         with open("GUI/messages.txt", "r") as f:
             lines = f.readlines()
             print(lines)
@@ -57,14 +56,16 @@ class UserWindow(QWidget):
         self.label.setText(_translate("Form", "Masz {} nowych wiadomosci".format(len(self.messages))))
 
     def Quit(self):
+        self.user = ""
+        self.messages = []
         self.close.emit()
         self.Form.close()
 
     def Next(self):
+        self.textBrowser.clear()
         if len(self.messages) > 0:
             message = self.messages[0].split(' ')
             if (len(message) > 4):
-                self.textBrowser.clear()
                 self.textBrowser.append("Wysylajacy: {} \n Wiadomosc: \n".format(message[2] + " " + message[3]))
                 self.textBrowser.append(' '.join(message[4:]))
             self.messages = self.messages[1:]
@@ -114,10 +115,10 @@ class UserWindow(QWidget):
         self.pushButton.setText(_translate("Form", "Send"))
 
     def Save(self):
-        with open("GUI/messages.txt", "w") as f:
+        with open("GUI/messages.txt", "a") as f:
             name = self.lineEdit.text()
             surname = self.lineEdit_2.text()
             data = self.textEdit.toPlainText()
-            line = ' '.join([name, surname, self.user, data])
+            line = ' '.join([name, surname, self.user, data]) + '\n'
             f.write(line)
         self.FormNew.close()
